@@ -23,6 +23,7 @@ class avltree1{
         void CheckRotationRight(avlelem1* &elem);
         void CheckRotationLeft(avlelem1* &elem);
         void Print(avlelem1 *curr);
+        void PrintSorted(avlelem1 *curr);
         void RotateLeft(avlelem1* &a);
         void DoubleRotationLeft(avlelem1* &a);
         void RotateRight(avlelem1* &a);
@@ -32,6 +33,7 @@ class avltree1{
         ~avltree1();
         void Insert(object o); // Wert einfügen
         void Print();   // Baum ausgeben
+        void PrintSorted();
 };
 
 avltree1::avltree1(){
@@ -155,4 +157,18 @@ void avltree1::Print(avlelem1 *root){
         printf("n");
     }
 }
+
+void avltree1::PrintSorted(){
+    PrintSorted(root);
+    printf("\n");
+}
+
+void avltree1::PrintSorted(avlelem1 *root){
+    if(root!=NULL){
+        PrintSorted(root->left);
+        printf("%d,", root->val);
+        PrintSorted(root->right);
+    }
+}
+
 #endif // AVL_TREE
