@@ -33,7 +33,7 @@ class avltree1{
         ~avltree1();
         void Insert(object o); // Wert einfügen
         void Print();   // Baum ausgeben
-        void PrintSorted();
+        void PrintSorted(int *nmbrs, int n);
 };
 
 avltree1::avltree1(){
@@ -158,7 +158,10 @@ void avltree1::Print(avlelem1 *root){
     }
 }
 
-void avltree1::PrintSorted(){
+void avltree1::PrintSorted(int *nmbrs, int n){
+    for(int i = 0; i < n; i++){
+        Insert(nmbrs[i]);
+    }
     PrintSorted(root);
     printf("\n");
 }
