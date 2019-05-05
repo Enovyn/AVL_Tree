@@ -28,12 +28,14 @@ class avltree1{
         void DoubleRotationLeft(avlelem1* &a);
         void RotateRight(avlelem1* &a);
         void DoubleRotationRight(avlelem1* &a);
+        avlelem1* DeleteObject(avlelem1* &elem, object o);
     public:
         avltree1();
         ~avltree1();
-        void Insert(object o); // Wert einfügen
-        void Print();   // Baum ausgeben
+        void Insert(object o); //insert value
+        void Print();   //print tree
         void PrintSorted(int *nmbrs, int n);
+        void DeleteObject(object o);    //delete value
 };
 
 avltree1::avltree1(){
@@ -139,6 +141,113 @@ void avltree1::Insert(avlelem1* &elem,object o){
 
 void avltree1::Insert(object o){
     Insert(root, o);
+}
+
+avlelem1* searchMin(avlelem1* root){
+   avlelem1* pre;
+    while(root->left != NULL){
+        pre = root;
+        root = root->right;
+    }
+    pre->right = root->right;
+    //printf("%d\n", root->val);
+    return root;
+}
+
+avlelem1* avltree1::DeleteObject(avlelem1* &elem, object o){
+    avlelem1* save;
+    avlelem1* curr;
+            if (elem->left != NULL && elem->left->val == o){
+                save = elem->left;
+                if(save->left == NULL && save->right == NULL){
+                        elem->left = NULL;
+                        delete save;
+                        CheckRotationLeft(elem->left);
+                        CheckRotationRight(elem->left);
+                        return elem;
+                    }
+                if(save->left == NULL && save->right != NULL){
+                        elem->left = save->right;
+                        delete save;
+                        CheckRotationLeft(elem->left);
+                        CheckRotationRight(elem->left);
+                        return elem;
+                    }
+                if(save->left != NULL && save->right == NULL){
+                        elem->left = save->left;
+                        delete save;
+                        CheckRotationLeft(elem->left);
+                        CheckRotationRight(elem->left);
+                        return elem;
+                    }
+                if(save->left != NULL && save->right != NULL){
+                        curr = searchMin(save);
+                        if(save->left != curr){
+                            curr->left = save->left;
+                        }
+                        if(save->right != curr){
+                            curr->right = save->right;
+                        }
+                        elem->left = curr;
+                        delete save;
+                        CheckRotationLeft(elem->left);
+                        CheckRotationRight(elem->left);
+                        return elem;
+                    }
+            }else if(elem->right != NULL && elem->right->val == o){
+                save = elem->right;
+                if(save->left == NULL && save->right == NULL){
+                        elem->right = NULL;
+                        delete save;
+                        CheckRotationLeft(elem->right);
+                        CheckRotationRight(elem->right);
+                        return elem;
+                    }
+                if(save->left == NULL && save->right != NULL){
+                        elem->right = save->right;
+                        delete save;
+                        CheckRotationLeft(elem->right);
+                        CheckRotationRight(elem->right);
+                        return elem;
+                    }
+                if(save->left != NULL && save->right == NULL){
+                        elem->right = save->left;
+                        delete save;
+                        CheckRotationLeft(elem->right);
+                        CheckRotationRight(elem->right);
+                        return elem;
+                    }
+                if(save->left != NULL && save->right != NULL){
+                        curr = searchMin(save);
+                        if(save->left != curr){
+                            curr->left = save->left;
+                        }
+                        if(save->right != curr){
+                            curr->right = save->right;
+                        }
+                        elem->right = curr;
+                        CheckRotationLeft(elem->right);
+                        CheckRotationRight(elem->right);
+                        delete save;
+                        return elem;
+                }
+    }else{
+        if(o <= elem->val){
+            elem->left = DeleteObject(elem->left, o);
+            CheckRotationRight(elem->left);
+            return elem;
+        }else{
+            elem->right = DeleteObject(elem->right, o);
+            CheckRotationLeft(elem->right);
+            return elem;
+        }
+    }
+}
+
+void avltree1::DeleteObject(object o){
+    DeleteObject(root, o);
+    CheckRotationLeft(root);
+    CheckRotationRight(root);
 }
 
 void avltree1::Print(){
